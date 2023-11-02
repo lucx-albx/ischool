@@ -6,10 +6,12 @@ import CardClassi from './Componenti_Grafici/CardClassi'
 const Corsi = () => {
     const SERVER = process.env.REACT_APP_URL_SERVER
     const [permessi, setPermessi] = useState(false)
+    const [titoliCorsi, setTitoliCorsi] = useState(null)
 
     useEffect(() => {
         ruolo_utente()
-    }, [permessi])
+        carica_card_classi()
+    }, [permessi, titoliCorsi])
     
     const ruolo_utente =()=>{
         let UN = localStorage.method
@@ -38,15 +40,38 @@ const Corsi = () => {
     const crea_corso =()=>{
         document.querySelector(".sfondo-card-oscurato").classList.remove("invisibile")
     }
+    
+    const carica_card_classi =()=>{
+        let nm_cr = localStorage.getItem("method")
+        let tit_tmp = []
+        
+        fetch(SERVER + 'carica_corsi', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ nm_cr })
+        })
+        .then((testo)=>testo.json())
+        .then((data)=>{
+            data.elementi.map((elem,i)=>{
+                tit_tmp.push(elem)
+            })
+
+            setTitoliCorsi(tit_tmp)
+        })
+    }
 
     return (
         <div className='row mt-120 mb-30 mainCorsi'>
             <CardCorsi/>
-            <CardClassi/>
             
-
-            <div className='col-12 d-flex justify-content-center aling-items-center'>
-                Corsi
+            <div className='row container-corsi d-flex justify-content-center aling-items-center'>
+                {
+                    titoliCorsi ? titoliCorsi.map((elem, i) => {
+                        return <CardClassi key={i} titolo={elem}/>
+                    }) : null
+                }
             </div> 
 
             <div className='col-12 d-flex justify-content-center aling-items-center main-btn-crea-cosri invisibile'>

@@ -220,7 +220,6 @@ app.post('/aggiungi_corso', (req, res) => {
 		if(err){
 			res.json({ status: null })
 		} else {
-			console.log(result)
 			result.map((elem, i)=>{
 				if(elem.nome_utente_crittografato === nm_cr && elem.nome_corso === titolo_corso && trovato != true){
 					trovato = true

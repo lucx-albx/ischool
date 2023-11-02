@@ -1,0 +1,9 @@
+.mainCardClassi{
+    background-color: gray;
+    border-radius: 20px;
+    padding: 15px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
